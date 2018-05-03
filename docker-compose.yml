@@ -1,0 +1,27 @@
+version: "2"
+services:
+  andromeda_web:
+    build: ./docker/web
+    container_name: andromeda_web
+    ports:
+      - "8081:80"
+    depends_on:
+      - andromeda_db
+    links:
+      - andromeda_db
+    volumes:
+      - ./andromeda:/var/andromeda
+    tty: true
+
+  andromeda_db:
+    build: ./docker/db
+    container_name: andromeda_db
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: andromeda
+      MYSQL_HOST: "localhost"
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
